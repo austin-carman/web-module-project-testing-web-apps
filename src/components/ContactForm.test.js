@@ -3,6 +3,7 @@ import {render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import ContactForm from './ContactForm';
+import DisplayComponent from './DisplayComponent';
 
 test('renders without errors', ()=>{
     render(<ContactForm />);
@@ -116,22 +117,60 @@ test('renders all firstName, lastName and email text when submitted. Does NOT re
     const lastName = screen.getByLabelText(/last name/i)
     const email = screen.getByLabelText(/email/i)
     const message = screen.getByLabelText(/message/i)
-
+    
     userEvent.type(firstName, 'austin');
     userEvent.type(lastName, 'carman');
     userEvent.type(email, 'a@a.com');
-
+    
     expect(firstName).toHaveValue('austin');
     expect(lastName).toHaveValue('carman');
     expect(email).toHaveValue('a@a.com');
     expect(message).toHaveValue('');
+    
+    const button = screen.getByRole('button');
+    userEvent.click(button);
+    
+    const displayFirst = await screen.findByText('austin');
+    const displayLast = await screen.findByTestId('lastnameDisplay');
+    const displayEmail = await screen.findByTestId('emailDisplay');
+    // const displayMessage = await screen.findByTestId('messageDisplay');
+
+    expect(displayFirst).toBeInTheDocument();
+    expect(displayLast).toBeInTheDocument();
+    expect(displayEmail).toBeInTheDocument();
+    // expect(displayMessage).not.toBeInTheDocument();
 
 
-    // const button = screen.getByRole('button');
-    // userEvent.click(button);
 
 });
 
 test('renders all fields text when all fields are submitted.', async () => {
+    render(<ContactForm />);
+    const firstName = screen.getByLabelText(/first name/i)
+    const lastName = screen.getByLabelText(/last name/i)
+    const email = screen.getByLabelText(/email/i)
+    const message = screen.getByLabelText(/message/i)
     
+    userEvent.type(firstName, 'austin');
+    userEvent.type(lastName, 'carman');
+    userEvent.type(email, 'a@a.com');
+    userEvent.type(message, 'hello');
+    
+    expect(firstName).toHaveValue('austin');
+    expect(lastName).toHaveValue('carman');
+    expect(email).toHaveValue('a@a.com');
+    expect(message).toHaveValue('hello');
+    
+    const button = screen.getByRole('button');
+    userEvent.click(button);
+    
+    const displayFirst = await screen.findByText('austin');
+    const displayLast = await screen.findByTestId('lastnameDisplay');
+    const displayEmail = await screen.findByTestId('emailDisplay');
+    const displayMessage = await screen.findByTestId('messageDisplay');
+
+    expect(displayFirst).toBeInTheDocument();
+    expect(displayLast).toBeInTheDocument();
+    expect(displayEmail).toBeInTheDocument();
+    expect(displayMessage).toBeInTheDocument();
 });
