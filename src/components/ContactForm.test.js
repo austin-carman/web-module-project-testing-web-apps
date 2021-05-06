@@ -133,12 +133,12 @@ test('renders all firstName, lastName and email text when submitted. Does NOT re
     const displayFirst = await screen.findByText('austin');
     const displayLast = await screen.findByTestId('lastnameDisplay');
     const displayEmail = await screen.findByTestId('emailDisplay');
-    // const displayMessage = await screen.findByTestId('messageDisplay');
+    const displayMessage = await screen.queryByTestId('messageDisplay');
 
     expect(displayFirst).toBeInTheDocument();
     expect(displayLast).toBeInTheDocument();
     expect(displayEmail).toBeInTheDocument();
-    // expect(displayMessage).not.toBeInTheDocument();
+    expect(displayMessage).not.toBeInTheDocument();
 
 
 
